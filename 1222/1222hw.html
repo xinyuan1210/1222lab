@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dice Roller with Probability</title>
+  <style>
+    #dice-container {
+      display: flex;
+      justify-content: space-around;
+      margin: 20px;
+    }
+
+    .dice {
+      width: 80px;
+      height: 80px;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 50%;
+      margin: 20px auto;
+    }
+
+    th, td {
+      border: 1px solid #dddddd;
+      text-align: center;
+      padding: 8px;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Dice Roller with Probability</h2>
+
+<div id="dice-container"></div>
+
+<table>
+  <tr>
+    <th>Face</th>
+    <th>Probability</th>
+  </tr>
+  <!-- Rows for displaying probabilities will be added dynamically using JavaScript -->
+</table>
+
+<script>
+  function rollDice() {
+    // Number of dice
+    const numDice = 12;
+
+    // Clear previous dice and probabilities
+    const diceContainer = document.getElementById('dice-container');
+    diceContainer.innerHTML = '';
+
+    const probabilityTable = document.querySelector('table');
+    probabilityTable.innerHTML = '<tr><th>Face</th><th>Probability</th></tr>';
+
+    // Arrays to store the count of each face and calculate probability
+    const faceCount = [0, 0, 0, 0, 0, 0];
+
+    // Roll each die and display the corresponding image
+    for (let i = 0; i < numDice; i++) {
+      const rollResult = Math.floor(Math.random() * 6) + 1; // Assuming a six-sided die
+      const diceImage = `die${rollResult}.png`; // Replace with your actual image names
+
+      // Update the face count
+      faceCount[rollResult - 1]++;
+
+      // Create an image element for each die
+      const diceElement = document.createElement('img');
+      diceElement.src = diceImage;
+      diceElement.alt = `Die ${i + 1}`;
+      diceElement.className = 'dice';
+
+      // Append the image to the dice container
+      diceContainer.appendChild(diceElement);
+    }
+
+    // Calculate and display probabilities in the table
+    const probabilityTableBody = probabilityTable.createTBody();
+    for (let i = 0; i < faceCount.length; i++) {
+      const probability = (faceCount[i] / numDice * 100).toFixed(2) + '%';
+      const row = probabilityTableBody.insertRow();
+      row.insertCell(0).textContent = i + 1;
+      row.insertCell(1).textContent = probability;
+    }
+  }
+
+  // Initial roll when the page loads
+  rollDice();
+</script>
+
+<button onclick="rollDice()">Roll Dice</button>
+
+</body>
+</html>
